@@ -1,11 +1,20 @@
-# LunarCrushAPI
+# LunarCrushAPI v4
 ![PyPI version](https://img.shields.io/pypi/v/lunarcrush)
 
 Unofficial LunarCrush API **v2**, **v3**, and **v4** Wrapper for Python. No API key needed for LCv2!
 
+This is a fork of the [original LunarCrushAPI](https://github.com/saizk/LunarCrushAPI) with added support for LunarCrush API v4.
+
 ## 💽 Installation
-LunarCrushAPI is supported on **Python 3.6+**. You can install this package via pip:
+LunarCrushAPI is supported on **Python 3.6+**. 
+
+Install directly from this repository for v4 support:
+```bash
+pip install git+https://github.com/SnakeO/LunarCrushAPIv4.git
 ```
+
+Or install the original package (v2 and v3 only):
+```bash
 pip install lunarcrush
 ```
 ## 🔍 Quickstart for LunarCrush API v2
@@ -348,3 +357,16 @@ coin_data = lcv3.get_coin('BTC')
 topic_data = lcv4.get_topic('bitcoin')
 coin_data = lcv4.get_coin('BTC')  # Still available for market data
 ```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request to [SnakeO/LunarCrushAPIv4](https://github.com/SnakeO/LunarCrushAPIv4).
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Credits
+
+- Original LunarCrush API wrapper by [saizk](https://github.com/saizk/LunarCrushAPI)
+- v4 API support added by [SnakeO](https://github.com/SnakeO)

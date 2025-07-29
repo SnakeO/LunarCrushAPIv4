@@ -135,3 +135,7 @@ dist
 
 tests
 *.pypirc
+
+# Project specific
+.codebuddy/
+v4_docs/

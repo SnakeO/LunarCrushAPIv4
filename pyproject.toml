@@ -3,15 +3,15 @@ requires = ["setuptools>=59.3.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "lunarcrush"
-version = "2.0.5"
+name = "lunarcrush-v4"
+version = "2.1.0"
 authors = [
   { name="saizk", email="sergioaizcorbe@hotmail.com" },
 ]
 dependencies = [
     "requests"
 ]
-description = "Unofficial LunarCrush API v2 Wrapper for Python."
+description = "Unofficial LunarCrush API v2, v3, and v4 Wrapper for Python."
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.6"
@@ -27,5 +27,5 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/saizk/LunarCrushAPI"
-"Bug Tracker" = "https://github.com/saizk/LunarCrushAPI/issues"
+"Homepage" = "https://github.com/SnakeO/LunarCrushAPIv4"
+"Bug Tracker" = "https://github.com/SnakeO/LunarCrushAPIv4/issues"
