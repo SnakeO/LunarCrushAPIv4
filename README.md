@@ -1,7 +1,7 @@
 # LunarCrushAPI
 ![PyPI version](https://img.shields.io/pypi/v/lunarcrush)
 
-Unofficial LunarCrush API **v2** and **v3** Wrapper for Python. No API key needed for LCv2!
+Unofficial LunarCrush API **v2**, **v3**, and **v4** Wrapper for Python. No API key needed for LCv2!
 
 ## 💽 Installation
 LunarCrushAPI is supported on **Python 3.6+**. You can install this package via pip:
@@ -38,6 +38,50 @@ lcv3 = LunarCrushV3('<YOUR API KEY>')
 ```Python
 eth_insights = lcv3.get_coin_insights(coin='ETH', metrics='social_volume')
 ```
+
+## 🔍 Quickstart for LunarCrush API v4
+**1.** Create an instance of LunarCrushV4
+
+```Python
+from lunarcrush import LunarCrushV4
+
+lcv4 = LunarCrushV4('<YOUR API KEY>')
+```
+
+**2.** Start requesting information!
+
+```Python
+# Get trending topics
+trending_topics = lcv4.get_topics_list()
+
+# Get Bitcoin topic data with social metrics
+btc_topic = lcv4.get_topic('bitcoin')
+print(f"Bitcoin rank: {btc_topic['data']['topic_rank']}")
+print(f"24h interactions: {btc_topic['data']['interactions_24h']:,}")
+
+# Get top posts for a topic
+btc_posts = lcv4.get_topic_posts('bitcoin')
+for post in btc_posts['data'][:5]:
+    print(f"{post['post_type']}: {post['post_title'][:60]}...")
+
+# Get creator analytics
+elon = lcv4.get_creator('twitter', 'elonmusk')
+print(f"Followers: {elon['data']['creator_followers']:,}")
+
+# Search for posts (Individual tier)
+results = lcv4.search(term='ethereum')
+```
+
+### 📊 API v4 Tier Requirements
+
+| Feature | Individual | Pro | Enterprise |
+|---------|------------|-----|------------|
+| Topics, Categories, Creators | ✅ | ✅ | ✅ |
+| Posts, Basic Search | ✅ | ✅ | ✅ |
+| Time Series Data | ❌ | ✅ | ✅ |
+| AI Summaries (whatsup) | ❌ | ❌ | ✅ |
+| Advanced Coins/Stocks/NFTs | ❌ | ✅ | ✅ |
+| Custom Search Aggregations | ❌ | ✅ | ✅ |
 
 ## 📜 API v2 Endpoints
 Here is a short description for the LunarCrush API v2 Endpoints.
@@ -125,3 +169,182 @@ You can visit [LunarCrush API v3 documentation](https://lunarcrush.com/developer
 | **CANDLESTICK**  | The incredibly powerful Candlestick widget takes any data point and compares it to price over a specified timeframe.                                                                                                                                                                                                                                |
 | **WORD CLOUD**   | Uncover keywords used throughout collected social content for any coin. The Word Cloud is generated from all recent and available social posts from Twitter and Reddit. It looks at frequency of mentions. All data is segmented by either all coins or specific, individual coins.                                                                 |
 | **SOCIAL FEED**  | Display social feeds from multiple sources including Twitter, Reddit, news channels and more all at once. Gain unique insights into what's being talked about in real time. All social feeds have been cleaned with spam removed and can be organized by coin.                                                                                      |
+
+## 📰 API v4 Endpoints
+
+### Topics Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `get_topics_list()` | /public/topics/list/v1 | Get a list of trending social topics |
+| `get_topic_whatsup(topic)` | /public/topic/{topic}/whatsup/v1 | AI summary of hottest news and posts for a topic |
+| `get_topic(topic)` | /public/topic/{topic}/v1 | Get summary information for a social topic |
+| `get_topic_time_series_v2(topic, bucket)` | /public/topic/{topic}/time-series/v2 | Get historical time series data for a topic |
+| `get_topic_time_series(topic, bucket, interval, start, end)` | /public/topic/{topic}/time-series/v1 | Get historical time series data for a topic |
+| `get_topic_posts(topic, start, end)` | /public/topic/{topic}/posts/v1 | Get top posts for a social topic |
+| `get_topic_news(topic)` | /public/topic/{topic}/news/v1 | Get top news posts for a social topic |
+| `get_topic_creators(topic)` | /public/topic/{topic}/creators/v1 | Get top creators for a social topic |
+
+### Categories Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `get_category(category)` | /public/category/{category}/v1 | Get summary information for a social category |
+| `get_category_topics(category)` | /public/category/{category}/topics/v1 | Get top topics for a social category |
+| `get_category_time_series(category, bucket, interval, start, end)` | /public/category/{category}/time-series/v1 | Get historical time series data for a category |
+| `get_category_posts(category, start, end)` | /public/category/{category}/posts/v1 | Get top posts for a social category |
+| `get_category_news(category)` | /public/category/{category}/news/v1 | Get top news posts for a category |
+| `get_category_creators(category)` | /public/category/{category}/creators/v1 | Get top creators for a social category |
+| `get_categories_list()` | /public/categories/list/v1 | Get a list of trending social categories |
+
+### Creators Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `get_creators_list()` | /public/creators/list/v1 | Get a list of trending social creators |
+| `get_creator(network, id)` | /public/creator/{network}/{id}/v1 | Get detail information on a specific creator |
+| `get_creator_time_series(network, id, bucket, interval, start, end)` | /public/creator/{network}/{id}/time-series/v1 | Get time series data on a creator |
+| `get_creator_posts(network, id, start, end)` | /public/creator/{network}/{id}/posts/v1 | Get top posts for a specific creator |
+
+### Posts Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `get_post(post_type, post_id)` | /public/posts/{post_type}/{post_id}/v1 | Get details of a post |
+| `get_post_time_series(post_type, post_id)` | /public/posts/{post_type}/{post_id}/time-series/v1 | Get interactions over time for a post |
+
+### Coins Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `get_coins_list_v2(sort, filter, limit, desc, page)` | /public/coins/list/v2 | Get real-time snapshot of tracked coins |
+| `get_coins_list(sort, filter, limit, desc, page)` | /public/coins/list/v1 | Get cached snapshot of tracked coins |
+| `get_coin(coin)` | /public/coins/{coin}/v1 | Get market data on a coin or token |
+| `get_coin_time_series(coin, bucket, interval, start, end)` | /public/coins/{coin}/time-series/v2 | Get market time series data on a coin |
+| `get_coin_meta(coin)` | /public/coins/{coin}/meta/v1 | Get meta information for a cryptocurrency |
+
+### Stocks Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `get_stocks_list_v2(sort, filter, limit, desc, page)` | /public/stocks/list/v2 | Get real-time snapshot of tracked stocks |
+| `get_stocks_list(sort, filter, limit, desc, page)` | /public/stocks/list/v1 | Get cached snapshot of tracked stocks |
+| `get_stock(stock)` | /public/stocks/{stock}/v1 | Get market data on a stock |
+| `get_stock_time_series(stock, bucket, interval, start, end)` | /public/stocks/{stock}/time-series/v1 | Get market time series data on a stock |
+
+### NFTs Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `get_nfts_list_v2(sort, filter, limit, desc, page)` | /public/nfts/list/v2 | Get real-time snapshot of tracked NFT collections |
+| `get_nfts_list(sort, filter, limit, desc, page)` | /public/nfts/list/v1 | Get cached snapshot of tracked NFT collections |
+| `get_nft(nft)` | /public/nfts/{nft}/v1 | Get data on an NFT collection |
+| `get_nft_time_series_v2(nft, bucket)` | /public/nfts/{nft}/time-series/v2 | Get time series data on an NFT collection |
+| `get_nft_time_series(nft, bucket, interval, start, end)` | /public/nfts/{nft}/time-series/v1 | Get time series data on an NFT collection |
+
+### Searches Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `search(term, search_json)` | /public/searches/search | Search for posts matching a term or custom criteria |
+| `get_searches_list()` | /public/searches/list | Get a list of saved searches |
+| `create_search(name, search_json, priority)` | /public/searches/create | Create a custom search aggregation |
+| `update_search(slug, name, search_json)` | /public/searches/{slug}/update | Update a saved search |
+| `delete_search(slug)` | /public/searches/{slug}/delete | Delete a saved search |
+| `get_searches(slug)` | /public/searches/{slug} | Get summary of a custom search |
+
+### Systems Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `get_system_changes()` | /public/system/changes | Get recent system changes |
+
+You can visit [LunarCrush API v4 documentation](https://lunarcrush.com/developers/api/authentication) for a more detailed description of all the endpoints and parameters.
+
+### 🔧 API v4 Advanced Examples
+
+#### Working with Topics
+```python
+# Get AI summary for a topic (Enterprise tier required)
+summary = lcv4.get_topic_whatsup('bitcoin')
+
+# Get historical time series (Pro tier required)
+btc_history = lcv4.get_topic_time_series('bitcoin', interval='1w')
+
+# Get top creators for a topic
+creators = lcv4.get_topic_creators('bitcoin')
+for creator in creators['data'][:5]:
+    print(f"@{creator['creator_name']} - {creator['interactions_24h']:,} interactions")
+```
+
+#### Categories Analysis
+```python
+# List all categories
+categories = lcv4.get_categories_list()
+
+# Get cryptocurrency category metrics
+crypto = lcv4.get_category('cryptocurrencies')
+print(f"Total posts: {crypto['data']['num_posts']:,}")
+print(f"Sentiment: {crypto['data']['types_sentiment']['tweet']}%")
+
+# Get top topics in a category
+topics = lcv4.get_category_topics('cryptocurrencies')
+```
+
+#### Creator Analytics
+```python
+# Get creator time series data
+elon_history = lcv4.get_creator_time_series('twitter', 'elonmusk', interval='1w')
+
+# Get creator's recent posts
+elon_posts = lcv4.get_creator_posts('twitter', 'elonmusk')
+```
+
+#### Custom Search (Pro tier)
+```python
+# Create a custom search aggregation
+search_config = {
+    "terms": [
+        {
+            "term": "bitcoin",
+            "require": ["price", "bull"],
+            "exclude": ["bear", "crash"]
+        }
+    ]
+}
+lcv4.create_search("BTC Bull Signals", json.dumps(search_config))
+
+# List your saved searches
+my_searches = lcv4.get_searches_list()
+```
+
+### ⚠️ Error Handling & Rate Limits
+
+API v4 returns errors in the response instead of raising exceptions:
+
+```python
+response = lcv4.get_topic_whatsup('bitcoin')
+if 'error' in response:
+    print(f"Error: {response['error']}")
+    # Common errors:
+    # - "Rate limit exceeded (minute)" 
+    # - "You must have a Enterprise or API Upgrade subscription to use this endpoint."
+else:
+    # Process successful response
+    print(response['summary'])
+```
+
+**Rate Limits by Tier:**
+- **Individual**: 60 requests/minute
+- **Pro**: 300 requests/minute  
+- **Enterprise**: 1000 requests/minute
+
+### 🔄 Migration from v3 to v4
+
+Key differences when upgrading from v3 to v4:
+
+1. **Unified Asset Support**: v4 combines coins, stocks, and NFTs in a unified API
+2. **Topics & Categories**: New social analytics based on topics rather than just assets
+3. **Creator Analytics**: Enhanced influencer tracking across platforms
+4. **AI Integration**: Built-in AI summaries for topics (Enterprise tier)
+5. **Better Search**: Custom search aggregations with inclusion/exclusion filters
+
+```python
+# v3 approach - coin-focused
+coin_data = lcv3.get_coin('BTC')
+
+# v4 approach - topic-focused with richer social data
+topic_data = lcv4.get_topic('bitcoin')
+coin_data = lcv4.get_coin('BTC')  # Still available for market data
+```
